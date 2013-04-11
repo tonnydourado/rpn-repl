@@ -28,6 +28,50 @@ class Calc(dict):
         self.clean_stack()
         return result
 
+    def parse(self, raw_input):
+        def to_number(token):
+            try:
+                return int(token)
+            except ValueError:
+                try:
+                    return float(token)
+                except ValueError:
+                    return None
+        
+        is_op = lambda token: token in self.ops()
+        is_quit = lambda token: token == self.quit
+       
+        tokens = raw_input.split(' ')
+        input_stack = []
+        for token in tokens:
+            if is_op(token) or is_quit(token):
+                input_stack.append(token)
+            else:
+                number = to_number(token)
+                if number is not None:
+                    input_stack.append(number)
+                else:
+                    raise ValueError('Invalid number: ' + token)
+        return input_stack
+
+    def run(self):
+        while True:
+            raw_input = input(': ')
+            try:
+                result = self.solve(self.parse(raw_input))
+            except ValueError as e:
+                print(e)
+                continue
+            except IndexError:
+                print('Mal formed expression')
+                continue
+            if self.quit in result:
+                result.pop(result.index(calc.quit))
+                break
+            print(result)
+        print(result)
+                    
+
 if __name__ == '__main__':
     ops = {
         '+': lambda x, y: x + y,    
@@ -36,34 +80,7 @@ if __name__ == '__main__':
         '/': lambda x, y: x / y
     }
     calc = Calc('quit', ops)
-
-    while True:
-        raw_input = input(':')
-        tokens = raw_input.split(' ')
-        input_stack = []
-        for token in tokens:
-            if token == calc.quit:
-                input_stack.append(token)
-            elif token in calc.ops():
-                input_stack.append(token)
-            else:            
-                try:
-                    number = int(token)
-                except ValueError:
-                    try:
-                        number = float(token)
-                    except ValueError:
-                        print('ValueError: invalid number: ' + token)
-                        break
-                input_stack.append(number)
-        else:
-            result = calc.solve(input_stack)
-            if calc.quit in result:
-                result.pop(result.index(calc.quit))
-                print(result)
-                break
-            else:
-                print(result)
+    calc.run()
                                 
             
             
