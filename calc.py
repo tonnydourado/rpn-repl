@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 if __name__ == '__main__':
+    def add(x, y):
+        return x + y
+
+    def sub(x, y):
+        return x - y
+
+    def mul(x, y):
+        return x * y
+
+    def div(x, y):
+        return x / y
+
+    ops = {
+        '+': add,
+        '-': sub,
+        '*': mul,
+        '/': div
+    }
+    
     while True:
         stack = []
         raw_input = input(':')
@@ -9,22 +28,10 @@ if __name__ == '__main__':
             tokens = raw_input.split(' ')
             while len(tokens) > 0:
                 token = tokens.pop(0)
-                if token == '+':
+                if token in ops.keys():
                     arg1 = stack.pop(0)
                     arg2 = stack.pop(0)
-                    stack.insert(0, arg1 + arg2)
-                elif token == '-':
-                    arg1 = stack.pop(0)
-                    arg2 = stack.pop(0)
-                    stack.insert(0, arg1 - arg2)
-                elif token == '*':
-                    arg1 = stack.pop(0)
-                    arg2 = stack.pop(0)
-                    stack.insert(0, arg1 * arg2)
-                elif token == '/':
-                    arg1 = stack.pop(0)
-                    arg2 = stack.pop(0)
-                    stack.insert(0, arg1 / arg2)
+                    stack.insert(0, ops[token](arg1, arg2))
                 else:
                     try:
                         number = int(token)
