@@ -1,22 +1,10 @@
 #!/usr/bin/env python3
 if __name__ == '__main__':
-    def add(x, y):
-        return x + y
-
-    def sub(x, y):
-        return x - y
-
-    def mul(x, y):
-        return x * y
-
-    def div(x, y):
-        return x / y
-
     ops = {
-        '+': add,
-        '-': sub,
-        '*': mul,
-        '/': div
+        '+': lambda x, y: x + y,
+        '-': lambda x, y: x - y,
+        '*': lambda x, y: x * y,
+        '/': lambda x, y: x / y
     }
     
     while True:
