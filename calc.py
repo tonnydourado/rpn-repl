@@ -18,9 +18,8 @@ class Calc(dict):
             if op == self.quit:
                 self.stack.insert(0, self.quit)
                 break
-            if op in self.keys():
-                arg1 = self.stack.pop(0)
-                arg2 = self.stack.pop(0)
+            if op in self.ops():
+                arg1, arg2 = self.stack.pop(0), self.stack.pop(0)
                 self.stack.insert(0, self[op](arg1, arg2))
             else:
                 self.stack.insert(0, op)
@@ -74,10 +73,13 @@ class Calc(dict):
 
 if __name__ == '__main__':
     ops = {
-        '+': lambda x, y: x + y,    
-        '-': lambda x, y: x - y,
-        '*': lambda x, y: x * y,
-        '/': lambda x, y: x / y
+        '+' : lambda x, y: x + y,    
+        '-' : lambda x, y: x - y,
+        '*' : lambda x, y: x * y,
+        '/' : lambda x, y: x / y,
+        '//': lambda x, y: x // y,
+        '%' : lambda x, y: x % y,
+        '^' : lambda x, y: x ** y
     }
     calc = Calc('quit', ops)
     calc.run()
