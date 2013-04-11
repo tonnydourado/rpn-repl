@@ -16,8 +16,8 @@ class Calc(dict):
         while len(input_stack) > 0:
             op = input_stack.pop(0)
             if op == self.quit:
-                self.clean_stack()
-                return
+                self.stack.insert(0, self.quit)
+                break
             if op in self.keys():
                 arg1 = self.stack.pop(0)
                 arg2 = self.stack.pop(0)
@@ -30,14 +30,13 @@ class Calc(dict):
 
 if __name__ == '__main__':
     ops = {
-        '+': lambda x, y: x + y,
+        '+': lambda x, y: x + y,    
         '-': lambda x, y: x - y,
         '*': lambda x, y: x * y,
         '/': lambda x, y: x / y
     }
     calc = Calc('quit', ops)
 
-    
     while True:
         raw_input = input(':')
         tokens = raw_input.split(' ')
@@ -59,7 +58,9 @@ if __name__ == '__main__':
                 input_stack.append(number)
         else:
             result = calc.solve(input_stack)
-            if result is None:
+            if calc.quit in result:
+                result.pop(result.index(calc.quit))
+                print(result)
                 break
             else:
                 print(result)
