@@ -1,0 +1,4 @@
+ * Add tests;
+ * Support operators with different arities;
+ * Custom Stack implementation will make it better to read;
+ * Custom exceptions (?);

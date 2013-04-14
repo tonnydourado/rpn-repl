@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-class Calc(dict):
+class RPNREPL(dict):
     def __init__(self, quit_command, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.stack = []
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         '%' : lambda x, y: x % y,
         '^' : lambda x, y: x ** y
     }
-    calc = Calc('quit', ops)
+    calc = RPNREPL('quit', ops)
     calc.run()
 
 
