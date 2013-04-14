@@ -36,10 +36,10 @@ class Calc(dict):
                     return float(token)
                 except ValueError:
                     return None
-        
+
         is_op = lambda token: token in self.ops()
         is_quit = lambda token: token == self.quit
-       
+
         tokens = raw_input.split(' ')
         input_stack = []
         for token in tokens:
@@ -69,11 +69,11 @@ class Calc(dict):
                 break
             print(result)
         print(result)
-                    
+
 
 if __name__ == '__main__':
     ops = {
-        '+' : lambda x, y: x + y,    
+        '+' : lambda x, y: x + y,
         '-' : lambda x, y: x - y,
         '*' : lambda x, y: x * y,
         '/' : lambda x, y: x / y,
@@ -83,14 +83,14 @@ if __name__ == '__main__':
     }
     calc = Calc('quit', ops)
     calc.run()
-                                
-            
-            
-        
 
 
 
 
 
-    
-        
+
+
+
+
+
+
