@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 
+
+class Stack(list):
+    """Stack class."""
+    def __init__(self):
+        super(Stack, self).__init__()
+
+    def pop(self, n=1):
+        return tuple(self.pop() for i in range(n))
+
+    def push(self, value):
+        self.append(value)
+
+    def top(self):
+        return self[-1]
+
+    def size(self):
+        return len(self)
+
+
 class RPNREPL(dict):
     def __init__(self, quit_command, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,24 +92,13 @@ class RPNREPL(dict):
 
 if __name__ == '__main__':
     ops = {
-        '+' : lambda x, y: x + y,
-        '-' : lambda x, y: x - y,
-        '*' : lambda x, y: x * y,
-        '/' : lambda x, y: x / y,
+        '+': lambda x, y: x + y,
+        '-': lambda x, y: x - y,
+        '*': lambda x, y: x * y,
+        '/': lambda x, y: x / y,
         '//': lambda x, y: x // y,
-        '%' : lambda x, y: x % y,
-        '^' : lambda x, y: x ** y
+        '%': lambda x, y: x % y,
+        '^': lambda x, y: x ** y
     }
     calc = RPNREPL('quit', ops)
     calc.run()
-
-
-
-
-
-
-
-
-
-
-
