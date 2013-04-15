@@ -107,12 +107,3 @@ if __name__ == '__main__':
     }
     calc = RPNREPL('quit', ops)
     calc.run()
-    # s = Stack()
-    # for i in range(10):
-    #     s.push(i)
-
-    # print(s)
-    # print(s.pop())
-    # print(s)
-    # print(s.pop(2))
-    # print(s)
