@@ -2,3 +2,5 @@
  * Support operators with different arities;
  * Custom Stack implementation will make it better to read;
  * Custom exceptions (?);
+ * Separate concerns: Stack, RPNCalc, REPL, Parser;
+ * REPL must read from custom file, defaulting to sys.stdin;
