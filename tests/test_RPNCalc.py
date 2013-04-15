@@ -36,7 +36,6 @@ class TestRPNCalc(unittest.TestCase):
                 input_stack.push(arg)
 
             result = self.calc.solve(input_stack)
-            print('BUNDINHA', op, args, self.ops[op].function(*args))
             self.assertSequenceEqual(result, [self.ops[op].function(*args)])
 
     def test_quit_alone(self):
