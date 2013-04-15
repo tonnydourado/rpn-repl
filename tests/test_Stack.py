@@ -24,7 +24,7 @@ class TestStack(unittest.TestCase):
     def test_parametrized_pop(self):
         """pop(n) removes and returns the last n pushed values."""
         poped = self.stack.pop(3)
-        should_be_poped = list(range(self.N - self.NPOP, self.N))
+        should_be_poped = list(range(self.N - 1, self.N - self.NPOP - 1, -1))
         self.assertSequenceEqual(poped, should_be_poped)
 
     def test_top(self):
