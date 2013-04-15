@@ -36,8 +36,8 @@ class TestRPNCalc(unittest.TestCase):
                 input_stack.push(arg)
 
             result = self.calc.solve(input_stack)
-            print(self.ops[op].function(*args))
-            self.assertSequenceEqual(result, self.ops[op].function(*args))
+            print('BUNDINHA', op, args, self.ops[op].function(*args))
+            self.assertSequenceEqual(result, [self.ops[op].function(*args)])
 
     def test_quit_alone(self):
         """Tests the quit command alone"""
