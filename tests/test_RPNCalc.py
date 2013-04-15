@@ -36,5 +36,17 @@ class TestRPNCalc(unittest.TestCase):
                 input_stack.push(arg)
 
             result = self.calc.solve(input_stack)
+            print(self.ops[op].function(*args))
+            self.assertSequenceEqual(result, self.ops[op].function(*args))
 
-            self.assertSequenceEqual(result, self.ops[op].functionus(*args))
+    def test_quit_alone(self):
+        """Tests the quit command alone"""
+        input_stack = ['q']
+        result = self.calc.solve(input_stack)
+        self.assertEqual(result, [])
+
+    def test_quit_in_expression(self):
+        """Tests the quit command in the middle of a expression"""
+        input_stack = [1, 2, '+', 3, 3, '-', 'q', '*']
+        result = self.calc.solve(input_stack)
+        self.assertEqual(result, [3, 6])
