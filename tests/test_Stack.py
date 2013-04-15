@@ -19,7 +19,7 @@ class TestStack(unittest.TestCase):
 
     def test_basic_pop(self):
         """pop() removes and returns the last pushed value."""
-        self.assertEqual(self.stack.pop(), [self.N - 1])
+        self.assertEqual(self.stack.pop(), self.N - 1)
 
     def test_parametrized_pop(self):
         """pop(n) removes and returns the last n pushed values."""
