@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
+from collections import namedtuple
+
+
+Operator = namedtuple('Operator', ['function', 'arity'])
 
 
 class Stack(list):
     """Stack class."""
-    def __init__(self):
-        super(Stack, self).__init__()
-
     def pop(self, n=1):
-        return tuple(self.pop() for i in range(n))
+        result = self[-(n):]
+        del self[-(n):]
+        return result
 
     def push(self, value):
         self.append(value)
@@ -18,32 +21,33 @@ class Stack(list):
     def size(self):
         return len(self)
 
+    def empty(self):
+        for i in range(self.size()):
+            self.pop()
+
 
 class RPNREPL(dict):
     def __init__(self, quit_command, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.stack = []
+        self.stack = Stack()
         self.quit = quit_command
-
-    def clean_stack(self):
-        self.stack = []
 
     def ops(self):
         return self.keys()
 
     def solve(self, input_stack):
         while len(input_stack) > 0:
-            op = input_stack.pop(0)
+            op = input_stack.pop()
             if op == self.quit:
-                self.stack.insert(0, self.quit)
+                self.stack.push(self.quit)
                 break
             if op in self.ops():
-                arg1, arg2 = self.stack.pop(0), self.stack.pop(0)
-                self.stack.insert(0, self[op](arg1, arg2))
+                print(self.stack.pop(2))
+                self.stack.push(op)
             else:
-                self.stack.insert(0, op)
+                self.stack.push(op)
         result = self.stack[::]
-        self.clean_stack()
+        self.stack.empty()
         return result
 
     def parse(self, raw_input):
@@ -60,14 +64,14 @@ class RPNREPL(dict):
         is_quit = lambda token: token == self.quit
 
         tokens = raw_input.split(' ')
-        input_stack = []
+        input_stack = Stack()
         for token in tokens:
             if is_op(token) or is_quit(token):
-                input_stack.append(token)
+                input_stack.push(token)
             else:
                 number = to_number(token)
                 if number is not None:
-                    input_stack.append(number)
+                    input_stack.push(number)
                 else:
                     raise ValueError('Invalid number: ' + token)
         return input_stack
@@ -79,6 +83,7 @@ class RPNREPL(dict):
                 result = self.solve(self.parse(raw_input))
             except ValueError as e:
                 print(e)
+                raise e
                 continue
             except IndexError:
                 print('Mal formed expression')
@@ -102,3 +107,12 @@ if __name__ == '__main__':
     }
     calc = RPNREPL('quit', ops)
     calc.run()
+    # s = Stack()
+    # for i in range(10):
+    #     s.push(i)
+
+    # print(s)
+    # print(s.pop())
+    # print(s)
+    # print(s.pop(2))
+    # print(s)
