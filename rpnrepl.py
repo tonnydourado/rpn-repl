@@ -9,6 +9,8 @@ Operator = namedtuple('Operator', ['function', 'arity'])
 class Stack(list):
     """Stack class."""
     def pop(self, n=1):
+        if n == 0:
+            return []
         result = [super(Stack, self).pop() for i in range(n)]
         return result if len(result) > 1 else result.pop()
 
@@ -41,7 +43,10 @@ class RPNCalc(dict):
                 op = self[value].function
                 args = self.stack.pop(self[value].arity)
                 args = args if isinstance(args, list) else [args]
-                self.stack.push(op(*args))
+                result = op(*args)
+                if result is None:
+                    break
+                self.stack.push(result)
             else:
                 self.stack.push(value)
         result = self.stack[::]
@@ -52,7 +57,7 @@ if __name__ == '__main__':
     import sys
     print(sys.version)
     ops = {
-        'q': Operator(lambda: None, 0),
+        'quit': Operator(lambda: None, 0),
         '+': Operator(lambda x, y: x + y, 2),
         '-': Operator(lambda x, y: x - y, 2),
         '*': Operator(lambda x, y: x * y, 2),
@@ -66,7 +71,7 @@ if __name__ == '__main__':
     }
     calc = RPNCalc(ops)
     input_stack = Stack()
-    for v in ('sqrt', '*', '+', 1, 2, '-', 6, 3):
+    for v in ('sqrt', 'quit', '*', '+', 1, 2, '-', 6, 3):
         input_stack.push(v)
     print(input_stack)
     print(calc.solve(input_stack))
