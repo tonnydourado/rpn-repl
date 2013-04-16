@@ -17,15 +17,19 @@ class TestStack(unittest.TestCase):
         self.stack.push(self.N)
         self.assertSequenceEqual(self.stack, list(range(self.N + 1)))
 
-    def test_basic_pop(self):
+    def test_pop_1(self):
         """pop() removes and returns the last pushed value."""
         self.assertEqual(self.stack.pop(), self.N - 1)
 
-    def test_parametrized_pop(self):
-        """pop(n) removes and returns the last n pushed values."""
+    def test_pop_n(self):
+        """pop(n) removes and returns the last n (n > 1) pushed values."""
         poped = self.stack.pop(3)
         should_be_poped = list(range(self.N - 1, self.N - self.NPOP - 1, -1))
         self.assertSequenceEqual(poped, should_be_poped)
+
+    def test_pop_0(self):
+        """pop(0) returns a empty list."""
+        self.assertEqual(self.stack.pop(0), [])
 
     def test_top(self):
         """top() returns the last pushed value, without removing it."""
