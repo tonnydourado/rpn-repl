@@ -1,5 +1,5 @@
  * Add tests;
     * How to test the repl? Just calling the methods?
- * Custom exceptions (?);
- * Separate concerns: Stack, RPNCalc, REPL, Parser;
+    * testing failure conditions
+ * Implementing variable arity using parenthesys, each () block starts a new stack;
  * REPL must read from custom file, defaulting to sys.stdin;
