@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
-from rpnrepl import Stack
+from stack import Stack
 
 
 class TestStack(unittest.TestCase):

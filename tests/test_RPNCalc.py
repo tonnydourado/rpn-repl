@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import unittest
-from rpnrepl import RPNCalc, Operator, Stack
+from rpncalc import RPNCalc, Operator
+from stack import Stack
 from math import sqrt
 
 
@@ -9,7 +10,6 @@ class TestRPNCalc(unittest.TestCase):
     """Test case for class RPNCalc."""
     def setUp(self):
         self.ops = {
-            'q': Operator(lambda: None, 0),
             '+': Operator(lambda x, y: x + y, 2),
             '-': Operator(lambda x, y: x - y, 2),
             '*': Operator(lambda x, y: x * y, 2),
@@ -25,8 +25,7 @@ class TestRPNCalc(unittest.TestCase):
 
     def test_ops(self):
         """"Tests every operator except for the quit command."""
-        ops = [op for op in self.calc.ops() if op != 'q']
-        for op in ops:
+        for op in self.ops:
             input_stack = Stack()
 
             input_stack.push(op)
