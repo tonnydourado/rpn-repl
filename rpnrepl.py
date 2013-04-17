@@ -1,61 +1,36 @@
 #!/usr/bin/env python3
-from collections import namedtuple
-from math import sqrt
+from cmd import Cmd
 
 
-Operator = namedtuple('Operator', ['function', 'arity'])
+class RPNREPL(Cmd):
+    """REPL (Read-Eval-Print Loop) for RPNCalc"""
+    def __init__(self, calc):
+        super(RPNREPL, self).__init__()
+        self.calc = calc
 
 
-class Stack(list):
-    """Stack class."""
-    def pop(self, n=1):
-        if n == 0:
-            return []
-        result = [super(Stack, self).pop() for i in range(n)]
-        return result if len(result) > 1 else result.pop()
+def parser(raw_input, ops):
+    def to_number(str_n):
+        try:
+            return int(str_n)
+        except ValueError:
+            try:
+                return float(str_n)
+            except ValueError as e:
+                e.args = ('invalid value "{}"'.format(str_n),)
+                raise e
 
-    def push(self, value):
-        self.append(value)
-
-    def top(self):
-        return self[-1]
-
-    def size(self):
-        return len(self)
-
-    def empty(self):
-        for i in range(self.size()):
-            self.pop()
-
-
-class RPNCalc(dict):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.stack = Stack()
-
-    def ops(self):
-        return self.keys()
-
-    def solve(self, input_stack):
-        while input_stack.size() > 0:
-            value = input_stack.pop()
-            if value in self.ops():
-                op = self[value].function
-                args = self.stack.pop(self[value].arity)
-                args = args if isinstance(args, list) else [args]
-                result = op(*args)
-                if result is None:
-                    break
-                self.stack.push(result)
-            else:
-                self.stack.push(value)
-        result = self.stack[::]
-        self.stack.empty()
-        return result
+    tokens = raw_input.split()
+    for token in tokens:
+        if token in ops.keys():
+            yield token
+        else:
+            yield to_number(token)
 
 if __name__ == '__main__':
-    import sys
-    print(sys.version)
+    from math import sqrt
+    from rpncalc import Operator, RPNCalc
+
     ops = {
         'quit': Operator(lambda: None, 0),
         '+': Operator(lambda x, y: x + y, 2),
@@ -69,9 +44,10 @@ if __name__ == '__main__':
             3
         )
     }
-    calc = RPNCalc(ops)
-    input_stack = Stack()
-    for v in ('sqrt', 'quit', '*', '+', 1, 2, '-', 6, 3):
-        input_stack.push(v)
-    print(input_stack)
-    print(calc.solve(input_stack))
+
+    RPNREPL(RPNCalc(ops)).cmdloop()
+
+    try:
+        print(tuple(parser('* - + -.1 1.2e-2 - 6 3 quit', ops)))
+    except ValueError as e:
+        print(e.args)
