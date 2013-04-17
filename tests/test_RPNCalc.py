@@ -24,7 +24,7 @@ class TestRPNCalc(unittest.TestCase):
         self.calc = RPNCalc(self.ops)
 
     def test_ops(self):
-        """"Tests every operator except for the quit command."""
+        """Tests every operator ."""
         for op in self.ops:
             input_stack = Stack()
 
