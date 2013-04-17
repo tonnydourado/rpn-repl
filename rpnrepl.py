@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from cmd import Cmd
+from stack import Stack
 
 
 class RPNREPL(Cmd):
@@ -7,6 +8,24 @@ class RPNREPL(Cmd):
     def __init__(self, calc):
         super(RPNREPL, self).__init__()
         self.calc = calc
+
+    def do_quit(self, arg):
+        return True
+
+    def default(self, arg):
+        if arg == 'EOF':
+            return True
+        else:
+            # print()
+            input_stack = Stack()
+            tokens = parser(' '.join(reversed(arg.split())), self.calc.ops())
+            try:
+                for token in tokens:
+                    input_stack.push(token)
+            except ValueError as e:
+                print(e)
+            else:
+                print(self.calc.solve(input_stack))
 
 
 def parser(raw_input, ops):
@@ -22,7 +41,7 @@ def parser(raw_input, ops):
 
     tokens = raw_input.split()
     for token in tokens:
-        if token in ops.keys():
+        if token in ops:
             yield token
         else:
             yield to_number(token)
@@ -32,7 +51,6 @@ if __name__ == '__main__':
     from rpncalc import Operator, RPNCalc
 
     ops = {
-        'quit': Operator(lambda: None, 0),
         '+': Operator(lambda x, y: x + y, 2),
         '-': Operator(lambda x, y: x - y, 2),
         '*': Operator(lambda x, y: x * y, 2),
@@ -46,8 +64,3 @@ if __name__ == '__main__':
     }
 
     RPNREPL(RPNCalc(ops)).cmdloop()
-
-    try:
-        print(tuple(parser('* - + -.1 1.2e-2 - 6 3 quit', ops)))
-    except ValueError as e:
-        print(e.args)

@@ -1,4 +1,5 @@
  * Add tests;
+    * How to test the repl? Just calling the methods?
  * Custom exceptions (?);
  * Separate concerns: Stack, RPNCalc, REPL, Parser;
  * REPL must read from custom file, defaulting to sys.stdin;
